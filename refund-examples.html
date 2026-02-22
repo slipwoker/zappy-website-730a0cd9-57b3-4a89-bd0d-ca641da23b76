@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>כמה כסף תוכלו לקבל בחזרה? דוגמאות אמיתיות — DK accounting & taxes</title>
+    <meta name="description" content="צפו בדוגמאות אמיתיות של החזרי מס שבח שקיבלו לקוחותינו. גלו כמה כסף אתם יכולים להחזיר ממכירת דירה ומה הסכומים האפשריים במקרה שלכם.">
+    <meta name="keywords" content="דוגמאות החזר מס שבח, סכומי החזר מס, החזר מס שבח על מכירת דירה, כמה כסף אפשר להחזיר, מחשבון מס שבח">
+    
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '730a0cd9-57b3-4a89-bd0d-ca641da23b76',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="כמה כסף תוכלו לקבל בחזרה? דוגמאות אמיתיות — DK accounting &amp; taxes">
+  <meta property="og:description" content="צפו בדוגמאות אמיתיות של החזרי מס שבח שקיבלו לקוחותינו. גלו כמה כסף אתם יכולים להחזיר ממכירת דירה ומה הסכומים האפשריים במקרה שלכם.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="כמה כסף תוכלו לקבל בחזרה? דוגמאות אמיתיות — DK accounting &amp; taxes">
+  <meta name="twitter:description" content="צפו בדוגמאות אמיתיות של החזרי מס שבח שקיבלו לקוחותינו. גלו כמה כסף אתם יכולים להחזיר ממכירת דירה ומה הסכומים האפשריים במקרה שלכם.">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/business-logo.webp" alt="DK accounting &amp; taxes" class="logo" />
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/how-it-works">איך זה עובד</a></li><li><a href="/refund-examples">דוגמאות החזר</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="examples-title-band-section" data-layout-spec="דוגמאות החזר-title-band">
+  <div class="examples-title-band-container">
+    <div class="examples-title-band-content">
+      <h1>תרחישים להמחשה של החזרי מס שבח</h1>
+      <p>אלו דוגמאות מפושטות המציגות כיצד עשוי להיווצר תשלום יתר במס שבח וכיצד מחושבים החזרים אפשריים. כל מקרה הוא ייחודי ומצריך בדיקה מקצועית מדויקת.</p>
+    </div>
+    
+    <div class="examples-title-band-highlights">
+      <div class="examples-highlight-tile">
+        <div class="examples-highlight-label">טווח החזר לדוגמה</div>
+        <div class="examples-highlight-value">₪15,000 - ₪85,000</div>
+      </div>
+      <div class="examples-highlight-tile">
+        <div class="examples-highlight-label">מורכבות בדיקה טיפוסית</div>
+        <div class="examples-highlight-value">בינונית עד גבוהה</div>
+      </div>
+      <div class="examples-highlight-tile">
+        <div class="examples-highlight-label">זמן הכנת תיק</div>
+        <div class="examples-highlight-value">3-7 ימי עבודה</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="examples-title-band-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,24 L0,4 L1200,4 L1200,24 Z" fill="var(--bg-light)"></path>
+      <path d="M0,24 L0,10 L1200,10 L1200,24 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="dk-case-studies-section" data-layout-spec="דוגמאות החזר-case-studies">
+  <div class="dk-case-studies-container">
+    <div class="dk-case-studies-header">
+      <h2>תרחישים נפוצים להחזר מס שבח</h2>
+      <p class="dk-case-studies-intro">ארבעה מצבים אופייניים שבהם משלמים יותר ממה שחייבים - והראיות שנדרשות כדי לתקן את זה</p>
+    </div>
+
+    <div class="dk-case-studies-grid">
+      <!-- Card 1 -->
+      <article class="dk-case-study-card">
+        <div class="dk-case-study-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M28 10L16 4L4 10L16 16L28 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M4 16L16 22L28 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M4 22L16 28L28 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <h3>ניכוי יתר בעת סגירת העסקה</h3>
+        <p>במכירת נכס, העורך דין או הנוטריון מנכים מס שבח מראש לפי הערכה שמרנית. לעיתים הניכוי גבוה מהמס המגיע בפועל.</p>
+        <p><strong>מה נדרש:</strong> אישור על סכום הניכוי בפועל מעורך הדין, דוח המכירה המקורי, וחישוב מדויק של המס המגיע על פי החוק.</p>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="dk-case-study-card">
+        <div class="dk-case-study-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="20" height="24" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+            <path d="M10 11H22M10 16H22M10 21H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>הוצאות מוכרות שלא נוצלו במלואן</h3>
+        <p>שיפוצים, עמלות, היטלים ועלויות נלוות נוספות מותרות בניכוי - אך לעיתים הן לא מדווחות במלואן או בכלל בדוח המקורי.</p>
+        <p><strong>מה נדרש:</strong> קבלות ואישורים על ההוצאות, אסמכתאות על תשלומים (העברות בנקאיות, חשבוניות מס), והוכחה שההוצאות קשורות ישירות למכירה או לשיפור הנכס.</p>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="dk-case-study-card">
+        <div class="dk-case-study-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="1.5"></circle>
+            <path d="M16 6V16L22 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>אי-התאמה בחלוקת בעלות</h3>
+        <p>כאשר הנכס בבעלות משותפת (בני זוג, שותפים עסקיים), לעיתים החלוקה בדוח אינה משקפת את חלוקת הבעלות האמיתית - מה שמוביל לתשלום יתר של אחד הצדדים.</p>
+        <p><strong>מה נדרש:</strong> מסמכי רישום בטאבו, הסכמי שיתוף או הסכמי ממון, ואישורים על אופן חלוקת התמורה בפועל בין הצדדים.</p>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="dk-case-study-card">
+        <div class="dk-case-study-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 16L14 22L24 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+          </svg>
+        </div>
+        <h3>אי-עקביות בין דיווחים</h3>
+        <p>סתירות בין נתונים בדוח מס שבח לבין דיווחים אחרים (מס הכנסה, דוחות רכישה קודמים) עלולות להוביל לחישוב שגוי של השבח.</p>
+        <p><strong>מה נדרש:</strong> השוואה מדוקדקת בין כל המסמכים הרלוונטיים, זיהוי הפערים, והצגת הנתונים הנכונים בליווי אסמכתאות מקוריות (חוזי קנייה, דוחות שנתיים, אישורי תשלום).</p>
+      </article>
+    </div>
+  </div>
+
+  <!-- Bottom Divider: Clipped Corner Paper-Stack Edge -->
+  <div class="dk-case-studies-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="dk-case-studies-clip">
+          <path d="M0,0 L1200,0 L1200,60 L1140,60 L1120,40 L0,40 Z"></path>
+        </clipPath>
+      </defs>
+      <rect width="1200" height="60" fill="var(--bg-light)" clip-path="url(#dk-case-studies-clip)"></rect>
+      <path d="M1120,40 L1140,60" stroke="var(--border-light)" stroke-width="1" fill="none"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="examples-comparison-table-section" data-layout-spec="דוגמאות החזר-comparison-table">
+  <div class="examples-comparison-table-container">
+    <div class="examples-comparison-table-header">
+      <h2>חישובי דוגמה (מפושטים)</h2>
+      <p class="examples-comparison-table-intro">הנתונים להמחשה בלבד ולצורך הסבר. כל מקרה נבדק בנפרד על פי נתוניו הייחודיים.</p>
+    </div>
+
+    <div class="examples-comparison-table-wrapper">
+      <table class="examples-comparison-table">
+        <thead>
+          <tr>
+            <th>דוגמה</th>
+            <th>מס שנוכה</th>
+            <th>בסיס מתואם / הוצאות</th>
+            <th>מס נכון משוער</th>
+            <th>החזר פוטנציאלי</th>
+            <th>הערות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>דירת מגורים ראשונה</strong></td>
+            <td class="numeric">85,000 ₪</td>
+            <td class="numeric">1,200,000 ₪</td>
+            <td class="numeric">42,000 ₪</td>
+            <td class="numeric highlighted">43,000 ₪</td>
+            <td><small>זיכוי מלא ממס שבח</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה משופצת</strong></td>
+            <td class="numeric">120,000 ₪</td>
+            <td class="numeric">950,000 ₪</td>
+            <td class="numeric">78,000 ₪</td>
+            <td class="numeric highlighted">42,000 ₪</td>
+            <td><small>הוצאות שיפוץ מוכרות</small></td>
+          </tr>
+          <tr>
+            <td><strong>נכס מושכר</strong></td>
+            <td class="numeric">95,000 ₪</td>
+            <td class="numeric">1,100,000 ₪</td>
+            <td class="numeric">68,000 ₪</td>
+            <td class="numeric highlighted">27,000 ₪</td>
+            <td><small>ללא זכאות לפטור</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה עם ירושה</strong></td>
+            <td class="numeric">110,000 ₪</td>
+            <td class="numeric">1,350,000 ₪</td>
+            <td class="numeric">55,000 ₪</td>
+            <td class="numeric highlighted">55,000 ₪</td>
+            <td><small>שווי ירושה כבסיס</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה ישנה שנרכשה ב-1995</strong></td>
+            <td class="numeric">140,000 ₪</td>
+            <td class="numeric">850,000 ₪</td>
+            <td class="numeric">92,000 ₪</td>
+            <td class="numeric highlighted">48,000 ₪</td>
+            <td><small>הצמדה למדד</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה עם הרחבה</strong></td>
+            <td class="numeric">105,000 ₪</td>
+            <td class="numeric">1,150,000 ₪</td>
+            <td class="numeric">71,000 ₪</td>
+            <td class="numeric highlighted">34,000 ₪</td>
+            <td><small>הוצאות בנייה מוכרות</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה במסגרת גירושין</strong></td>
+            <td class="numeric">75,000 ₪</td>
+            <td class="numeric">1,400,000 ₪</td>
+            <td class="numeric">28,000 ₪</td>
+            <td class="numeric highlighted">47,000 ₪</td>
+            <td><small>פטור חלקי לפי חוק</small></td>
+          </tr>
+          <tr>
+            <td><strong>דירה שנמכרה בהפסד</strong></td>
+            <td class="numeric">60,000 ₪</td>
+            <td class="numeric">1,600,000 ₪</td>
+            <td class="numeric">0 ₪</td>
+            <td class="numeric highlighted">60,000 ₪</td>
+            <td><small>החזר מלא - אין רווח</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="examples-comparison-table-note">
+      <svg data-no-icon-edit="true" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"></circle>
+        <path d="M10 6v4m0 4h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <p><small>שימו לב: הדוגמאות מבוססות על נתונים כלליים. כל מקרה נבחן לפי נסיבותיו הספציפיות, כולל מועד הרכישה, סוג הנכס, זכאות לפטורים והוצאות מוכרות. יש להתייעץ עם מומחה לפני הגשת בקשה להחזר מס שבח.</small></p>
+    </div>
+  </div>
+
+  <div class="examples-comparison-table-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,60 Q200,45 400,50 T800,48 Q1000,52 1200,45 L1200,60 Z" fill="var(--bg-dark)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="examples-assumptions-section" data-layout-spec="דוגמאות החזר-assumptions">
+  <div class="examples-assumptions-container">
+    <h2 class="examples-assumptions-title">הערות חשובות לגבי הדוגמאות</h2>
+    
+    <div class="examples-assumptions-content">
+      <p class="examples-assumptions-paragraph">
+        הדוגמאות המוצגות באתר זה מבוססות על מקרים אמיתיים ומייצגות תוצאות טיפוסיות שהושגו עבור לקוחותינו. עם זאת, חשוב להדגיש כי כל מקרה הוא ייחודי ותלוי בנסיבות הספציפיות שלו, במסמכים הזמינים ובפרטי העסקה.
+      </p>
+      
+      <p class="examples-assumptions-paragraph">
+        <strong>תלות בעובדות ובמסמכים:</strong> גובה החזר המס בפועל תלוי באימות מלא של כל המסמכים הרלוונטיים, כולל הסכמי מכר, חשבוניות שיפוץ, אישורי תשלום ומסמכים נוספים. אי-זמינות של מסמכים מסוימים עשויה להשפיע על התוצאה הסופית.
+      </p>
+      
+      <p class="examples-assumptions-paragraph">
+        <strong>משתני זמן ורשויות:</strong> לוחות הזמנים לקבלת החזר מס משתנים בהתאם לעומס של רשות המסים ולמורכבות התיק. בעוד שאנו פועלים למקסם את מהירות הטיפול, התוצאות עשויות להשתנות בין תיקים שונים.
+      </p>
+      
+      <p class="examples-assumptions-paragraph">
+        <strong>אין ערובה לתוצאה:</strong> אף שאנו משקיעים את מלוא המומחיות והמסירות בכל תיק, איננו יכולים להבטיח תוצאה ספציפית. כל מקרה נבחן על פי הכללים והנהלים של רשות המסים, והתוצאה הסופית תלויה בהחלטתם.
+      </p>
+      
+      <p class="examples-assumptions-paragraph examples-assumptions-cta-text">
+        מעוניינים להבין מה הפוטנציאל שלכם להחזר מס? צרו איתנו קשר לקבלת הערכה מקצועית ומותאמת אישית לתיק שלכם, ללא כל התחייבות.
+      </p>
+    </div>
+    
+    <div class="examples-assumptions-decorative-panel" aria-hidden="true"></div>
+  </div>
+  
+  <div class="examples-assumptions-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,35 Q100,30 200,35 T400,32 Q500,35 600,30 T800,35 Q900,32 1000,35 T1200,30 L1200,60 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="examples-cta-strip-section" data-layout-spec="דוגמאות החזר-cta-strip">
+  <div class="examples-cta-strip-container">
+    <div class="examples-cta-strip-content">
+      <h2>רוצים הערכה אישית?</h2>
+      <p>שתפו אותנו בפרטים בסיסיים דרך טופס יצירת הקשר ותקבלו תשובה מובנית לגבי הזכאות שלכם להחזר מס שבח.</p>
+    </div>
+    <div class="examples-cta-strip-action">
+      <a href="/contact" class="btn-primary">מעבר ליצירת קשר</a>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-column footer-about">
+        <img src="/assets/business-logo.webp" alt="DK accounting &amp; taxes" class="logo" />
+        <p class="footer-description">שירותי ייעוץ מיסוי וחשבונאות מקצועיים להחזרי מס מקסימליים</p>
+      </div>
+      
+      <div class="footer-column footer-links">
+        <h3 class="footer-title">קישורים מהירים</h3>
+        <ul class="footer-menu">
+          <li><a href="/how-it-works">איך זה עובד</a></li>
+          <li><a href="/refund-examples">דוגמאות החזר</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-contact">
+        <h3 class="footer-title">יצירת קשר</h3>
+        <ul class="contact-list">
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:[business_email]">[business_email]</a>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <a href="tel:[business_phone]">[business_phone]</a>
+          </li>
+          <li><a href="/"><i class="fas fa-map-marker-alt"></i>
+            <span>[business_address]</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-social">
+        <h3 class="footer-title">עקבו אחרינו</h3>
+        <div class="social-links">
+          <a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="separator">|</span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="separator">|</span>
+        <a href="/accessibility">הצהרת נגישות</a>
+      </div>
+      <div class="footer-copyright">
+        <p>© 2026 DK accounting &amp; taxes. כל הזכויות שמורות.</p>
+      </div>
+      <div class="footer-attribution">
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body>
+</html>
