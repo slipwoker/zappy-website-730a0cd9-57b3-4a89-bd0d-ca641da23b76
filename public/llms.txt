@@ -1,61 +1,47 @@
-# DK accounting & taxes — Generative Engine Optimization Map
-
-> A professional tax refund service specializing in capital gains tax (mas shevach) returns in Israel. The business focuses on helping clients recover tax overpayments through expert knowledge of Israeli tax law, providing detailed examples of potential refund amounts and addressing critical client questions in this specialized financial niche.
+# Business — Generative Engine Optimization Map
 
 ---
 
 ## Pages
 
 ### בית
-https://dk-accounting-taxes-730a0cd9.zappy5.app
+https://example.com
 מומחים בהחזרי מס שבח על מכירת דירה בישראל. נבדוק אם שילמתם יותר מדי מס ונחזיר לכם את הכסף שמגיע לכם. בדיקה ראשונית ללא עלות.
 
 ### איך זה עובד
-https://dk-accounting-taxes-730a0cd9.zappy5.app/how-it-works
+https://example.com/how-it-works
 איך להגיש בקשה להחזר מס שבח בארבעה שלבים פשוטים. אנחנו מטפלים בכל התהליך מול רשויות המס ומבטיחים את התוצאות הטובות ביותר עבורכם.
 
 ### דוגמאות החזר
-https://dk-accounting-taxes-730a0cd9.zappy5.app/refund-examples
+https://example.com/refund-examples
 צפו בדוגמאות אמיתיות של החזרי מס שבח שקיבלו לקוחותינו. גלו כמה כסף אתם יכולים להחזיר ממכירת דירה ומה הסכומים האפשריים במקרה שלכם.
 
 ### צור קשר
-https://dk-accounting-taxes-730a0cd9.zappy5.app/contact
+https://example.com/contact
 צרו קשר עוד היום לבדיקה חינם של זכאותכם להחזר מס שבח. המומחים שלנו זמינים לענות על כל שאלה ולהתחיל את התהליך מיד. התקשרו או שלחו הודעה.
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://dk-accounting-taxes-730a0cd9.zappy5.app/privacy
+https://example.com/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://dk-accounting-taxes-730a0cd9.zappy5.app/terms
+https://example.com/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://dk-accounting-taxes-730a0cd9.zappy5.app/accessibility
+https://example.com/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
 
 # Business Context (for LLM understanding)
 
-## About DK accounting & taxes
-A professional tax refund service specializing in capital gains tax (mas shevach) returns in Israel. The business focuses on helping clients recover tax overpayments through expert knowledge of Israeli tax law, providing detailed examples of potential refund amounts and addressing critical client questions in this specialized financial niche.
-
-## Target Audience
-- משקיעי נדל"ן
-- מוכרי בתים
-- מפתחי נדל"ן
-- סוכני נדל"ן
-- יועצים פיננסיים
-
-## Industry
-שירותים פיננסיים ומיסוי
-
+## About Business
 ---
 
 # Additional Resources
 
-- **Sitemap**: https://dk-accounting-taxes-730a0cd9.zappy5.app/sitemap.xml
-- **Robots.txt**: https://dk-accounting-taxes-730a0cd9.zappy5.app/robots.txt
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt
